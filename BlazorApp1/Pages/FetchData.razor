@@ -53,11 +53,12 @@
 
     private async void Search()
     {
-            robots = robots.Where(x => x.RobotId == SearchTerm).ToList();
+        robots = robots.Where(x => x.RobotId == SearchTerm).ToList();
     }
     private async void ClearSearch()
     {
-        await OnInitializedAsync();
+        RobotGet get = new();
+        robots = await get.GetRobotData();
     }
     private void SortId()
     {
