@@ -11,6 +11,7 @@
 
 <input type="text" @bind-value="SearchTerm" placeholder="Search for Robot Id..">
 <button class="btn btn-primary" @onclick="Search">Search</button>
+<button class="btn btn-primary" @onclick="ClearSearch">Clear Search</button>
 <button class="btn btn-primary" @onclick="SortId">Sort by Id</button>
 <button class="btn btn-primary" @onclick="SortBattery">Sort by BatteryLevel</button>
 <button class="btn btn-primary" @onclick="SortY">Sort by Y</button>
@@ -52,14 +53,11 @@
 
     private async void Search()
     {
-        if (SearchTerm == "")
-        {
-            OnInitializedAsync();
-        }
-        else
-        {
             robots = robots.Where(x => x.RobotId == SearchTerm).ToList();
-        }
+    }
+    private async void ClearSearch()
+    {
+        await OnInitializedAsync();
     }
     private void SortId()
     {
