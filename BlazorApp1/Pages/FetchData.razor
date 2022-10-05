@@ -1,0 +1,80 @@
+﻿@page "/fetchdata"
+
+<PageTitle>Robot Data</PageTitle>
+
+@using BlazorApp1.Data
+
+
+<h1>Robot Data</h1>
+
+<p></p>
+
+<input type="text" @bind-value="SearchTerm" placeholder="Search for Robot Id..">
+<button class="btn btn-primary" @onclick="Search">Search</button>
+<button class="btn btn-primary" @onclick="SortId">Sort by Id</button>
+<button class="btn btn-primary" @onclick="SortBattery">Sort by BatteryLevel</button>
+<button class="btn btn-primary" @onclick="SortY">Sort by Y</button>
+<button class="btn btn-primary" @onclick="SortX">Sort by X</button>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>RobotId</th>
+                <th>Battery Level</th>
+                <th>Y</th>
+                <th>X</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var robot in robots)
+            {
+                <tr>
+                    <td>@robot.RobotId</td>
+                    <td>@robot.BatteryLevel</td>
+                    <td>@robot.Y</td>
+                    <td>@robot.X</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+@code {
+    private List<Robot> robots = new();
+    private string SearchTerm;
+
+    protected override async Task OnInitializedAsync()
+    {
+        RobotGet get = new();
+        robots = await get.GetRobotData();
+    }
+
+    private async void Search()
+    {
+        if (SearchTerm == "")
+        {
+            OnInitializedAsync();
+        }
+        else
+        {
+            robots = robots.Where(x => x.RobotId == SearchTerm).ToList();
+        }
+    }
+    private void SortId()
+    {
+        robots = robots.OrderBy(x => Convert.ToInt32(x.RobotId)).ToList();
+    }
+    private void SortBattery()
+    {
+        robots = robots.OrderBy(x => x.BatteryLevel).ToList();
+    }
+    private void SortY()
+    {
+        robots = robots.OrderBy(x => x.Y).ToList();
+    }
+    private void SortX()
+    {
+        robots = robots.OrderBy(x => x.X).ToList();
+    }
+}
